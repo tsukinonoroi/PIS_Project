@@ -24,6 +24,7 @@ ul {
 }
 
 body {
+  height: 100%;
   font-family: "Expletus Sans";
   position: relative;
   color: #fff;
@@ -366,6 +367,12 @@ body {
   }
 }
 
+.wrapper2 {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 
 
 
@@ -454,6 +461,7 @@ body {
   padding-top: 20px;
   margin-left: 140px;
   padding-right: 0px;
+  flex: 1 1 auto;
 }
 
 

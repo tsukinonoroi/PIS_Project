@@ -115,6 +115,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# settings.py вашего Django проекта
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Уровень логирования. Может быть INFO, DEBUG, WARNING, ERROR, CRITICAL
+        },
+    },
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

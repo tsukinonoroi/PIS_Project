@@ -401,7 +401,6 @@ body._lock {
 
 
 
-
 .menu__item:hover .submenu {
   display: block;
 }
@@ -473,6 +472,7 @@ body._lock {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+  font-size: 10px;
 }
 
 

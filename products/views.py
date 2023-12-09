@@ -8,6 +8,51 @@ from datetime import datetime
 import requests
 from products.models import ApartCategory, Apart, TypeOfApart, ApartPlan, Vidovaya, Mebel, LcdOrSingle
 
+import logging
+
+from django.http import JsonResponse
+
+# Создайте объект логгера
+logger = logging.getLogger('django')
+
+def bitrix24_webhook(request):
+    if request.method == 'POST':
+        # Парсинг данных JSON от Bitrix24
+        data = request.POST.get('data')
+        # В data будет содержаться информация о сделке, например:
+        # {'FIELDS': {'ID': '8'}, ...}
+
+        # Получаем ID сделки из данных
+        deal_id = 1
+
+        # Выполняем запрос к API Bitrix24 для получения дополнительной информации о сделке
+        url = f'https://b24-uxgtgb.bitrix24.ru/rest/1/aa9mgbhlwesput68/crm.deal.get.json?id={deal_id}'
+        response = requests.get(url)
+
+        # Проверяем успешность запроса и обрабатываем ответ
+        if response.status_code == 200:
+            deal_data = response.json()
+            # В deal_data будет содержаться вся информация о сделке, включая её название
+
+            # Обрабатываем информацию о сделке и этапе
+            deal_title = deal_data['result']['TITLE']
+            # Другие данные о сделке доступны по аналогии...
+
+            # Логируем JSON-ответ в консоль
+            logger.info(f'JSON-ответ от API Bitrix24: {deal_data}')
+
+            # Теперь у вас есть доступ к названию сделки (deal_title) и другим данным
+            # Далее выполняем вашу логику обработки данных...
+
+            return JsonResponse({'status': 'success'})
+        else:
+            # Логируем ошибку в консоль
+            logger.error(f'Ошибка при запросе к API Bitrix24: {response.status_code}')
+
+            return JsonResponse({'status': 'error', 'message': 'Failed to get deal data from Bitrix24'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
 
 def index(request):
     categories = ApartCategory.objects.all()
@@ -63,6 +108,7 @@ def search(request):
     current_year = datetime.now().year
 
     building_ages = [current_year - apart.buildingAge for apart in all_aparts]
+    unique_building_ages = list(set(building_ages))
     category_ids = []
     for category in categories:
         category_id = request.GET.get('category_id_{}'.format(category.id))
@@ -180,6 +226,7 @@ def search(request):
         'bathroom_counts': bathroom_counts,
         'paginator': paginator,
         'page_obj': paginated_products,
+        'unique_building_ages': unique_building_ages,
     }
 
     if paginated_products.has_next():
@@ -247,8 +294,6 @@ def trusting(request):
 
 
 
-
-
 def tovar(request):
     if request.method == 'POST':
         is_lead_form = request.POST.get('is_lead_form') == 'true'
@@ -274,7 +319,7 @@ def tovar(request):
                 },
             }
 
-            url = 'https://b24-1dk1va.bitrix24.ru/rest/1/28ck3wiw97e5ztfz/crm.lead.add.json'
+            url = 'https://b24-ivcpkp.bitrix24.ru/rest/1/ffb0ftpur3ju2f2y/crm.lead.add.json'
             response = requests.post(url, json=lead_data)
 
             if response.status_code == 200:
@@ -305,6 +350,7 @@ def tovar(request):
                 similar_aparts = Apart.objects.exclude(id=apart_id)[:3]
                 apart_price = int(apart.price)
                 apart_price_formatted = '{:,}'.format(apart_price).replace(',', ' ')
+                similar_apart_price = int(similar_aparts.price)
                 euro_price = apart.price / 98
                 euro_price = int(euro_price)
                 euro_price = '{:,}'.format(euro_price).replace(',', ' ')
@@ -315,6 +361,7 @@ def tovar(request):
                     'euro_price': euro_price,
                     'lir_price': lir_price,
                     'apart_price_formatted': apart_price_formatted,
+                    'similar_apart_price': similar_apart_price,
                     'apart': apart,
                     'success_message': True,
                     'similar_aparts': similar_aparts,
@@ -378,6 +425,7 @@ def tovar(request):
             'apart_price_formatted': apart_price_formatted,
         }
         return render(request, 'products/tovar.html', context)
+
 
 
 

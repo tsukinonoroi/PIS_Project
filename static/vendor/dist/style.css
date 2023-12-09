@@ -632,6 +632,27 @@ body {
   font-family: Montserrat;
   font-size: 15px;
 }
+
+.block-filter__dropdown2 {
+  position: absolute;
+  z-index: 3;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.2s;
+  box-shadow: 0 0 5px 1px #000;
+
+
+
+
+}
+
 .block-filter__dropdown {
   position: absolute;
   z-index: 3;
@@ -646,8 +667,40 @@ body {
   pointer-events: none;
   transition: all 0.2s;
   box-shadow: 0 0 5px 1px #000;
+
+
+    max-height: 150px; /* Задайте желаемую максимальную высоту меню, при которой оно будет прокручиваться */
+    overflow-y: auto; /* Это свойство обеспечит прокручивание, если содержимое превышает максимальную высоту */
+
+
+
 }
+
+ /* Стили для ползунка вертикальной прокрутки */
+    .block-filter__dropdown::-webkit-scrollbar {
+        width: 8px; /* Ширина ползунка */
+    }
+
+    /* Фон ползунка */
+    .block-filter__dropdown::-webkit-scrollbar-thumb {
+        background-color: #888; /* Цвет фона ползунка */
+        border-radius: 4px; /* Закругление углов */
+    }
+
+    /* Изменение внешнего вида ползунка при наведении */
+    .block-filter__dropdown::-webkit-scrollbar-thumb:hover {
+        background-color: #555; /* Цвет фона ползунка при наведении */
+    }
+
 .block-filter__dropdown._active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transform: translateY(5px);
+
+}
+
+block-filter__dropdown2._active {
   opacity: 1;
   visibility: visible;
   pointer-events: all;
@@ -744,15 +797,21 @@ body {
     }
   }
 
+.kvadrati-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
 .kvadrati {
   position: relative;
   margin-top: -80px;
   display: flex;
-  z-index: 1;
-  gap: 50px;
-  margin-left: 225px;
-  flex-wrap: wrap;
+  z-index: 0;
+  gap: 45px;
+  padding-left: 225px;
 }
+
 
 .kvadrati p {
   padding-top: 10px;

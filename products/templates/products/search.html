@@ -17,6 +17,7 @@
 
 </head>
 <body>
+<div class="wrapper2">
      <header>
   <div class='header__container'>
     <a href="" class="header__logo">
@@ -200,7 +201,7 @@
                     <div class="years">
                         <select id="old-select" name="building_age">
                             <option value="" selected>Выберите возраст здания</option>
-                            {% for age in building_ages %}
+                            {% for age in unique_building_ages %}
                                 <option value="{{ age }}">{{ age }}</option>
                             {% endfor %}
                         </select>
@@ -440,6 +441,39 @@
 			</div>
 		</div>
 	</footer>
+<script>
+    function truncateDescription(element) {
+  const maxLength = 120;
+  const descriptionText = element.textContent;
+
+  if (descriptionText.length > maxLength) {
+    const truncatedText = descriptionText.slice(0, maxLength);
+    const lastSpaceIndex = truncatedText.lastIndexOf(' ');
+
+    // Check if there is a space before the maximum length
+    const finalText = lastSpaceIndex === -1 ? truncatedText : truncatedText.slice(0, lastSpaceIndex);
+
+    // Add ellipsis if the text was truncated
+    if (finalText !== descriptionText) {
+      element.textContent = finalText + '...';
+    }
+  }
+}
+
+// Получаем все элементы с классом "description"
+const descriptionElements = document.querySelectorAll(".obrezanie");
+
+// Применяем скрипт к каждому элементу
+descriptionElements.forEach(truncateDescription);
+
+
+    function applyTruncateDescription() {
+        const descriptionElements = document.querySelectorAll(".obrezanie");
+        descriptionElements.forEach(truncateDescription);
+    }
+</script>
+
+
 
 <script>
 
@@ -466,7 +500,7 @@ $(document).ready(function() {
                 };
 
                 $.ajax({
-                    url: 'https://b24-1dk1va.bitrix24.ru/rest/1/28ck3wiw97e5ztfz/crm.lead.add.json',
+                    url: 'https://b24-ivcpkp.bitrix24.ru/rest/1/ffb0ftpur3ju2f2y/crm.lead.add.json',
                     type: 'POST',
                     data: JSON.stringify(postData),
                     dataType: 'json',
@@ -499,13 +533,17 @@ $(document).ready(function() {
                 }).showToast();
             }
         });
+<!-- Assuming you have a button element with the ID 'filter-toggle1337' and a menu element with the class 'filtr_search' in your HTML -->
+
 $(document).ready(function() {
   $('#filter-toggle1337').click(function() {
     if ($(window).width() <= 767) {
-      if ($('.filtr_search').is(":hidden")) {
-        $('.filtr_search').css({
+      var $menu = $('.filtr_search');
+      // Toggle the menu when clicking the button
+      if ($menu.hasClass('hidden')) {
+        $menu.removeClass('hidden').css({
           'position': 'fixed',
-          'margin' : '0',
+          'margin': '0',
           'top': '0',
           'left': '-300px',
           'width': '300px',
@@ -516,17 +554,35 @@ $(document).ready(function() {
           'overflow-y': 'scroll'
         }).animate({
           left: '0'
-        }, 200); // Изменили 'slow' на 200 миллисекунд для более быстрой анимации
+        }, 200);
       } else {
-        $('.filtr_search').animate({
+        $menu.animate({
           left: '-300px'
         }, 200, function() {
-          $(this).hide();
+          $menu.addClass('hidden');
+        });
+      }
+    }
+  });
+
+  $(document).on('click touchstart', function(event) {
+    if ($(window).width() <= 767) {
+      var $menu = $('.filtr_search');
+      var $button = $('#filter-toggle1337');
+
+      // If the click was made outside the menu and button, then close the menu
+      if (!$menu.is(event.target) && $menu.has(event.target).length === 0 &&
+          !$button.is(event.target) && $button.has(event.target).length === 0) {
+        $menu.animate({
+          left: '-300px'
+        }, 200, function() {
+          $menu.addClass('hidden');
         });
       }
     }
   });
 });
+
 
 
 
@@ -565,8 +621,16 @@ $(document).ready(function() {
     var totalResults = {{ num_results }};
     var footer = $('.footer');
     var originalFooterMarginTop = parseInt(footer.css('margin-top'));
-            var newFooterMarginTop = originalFooterMarginTop - 380; // Уменьшение на 500px
+
+            if (totalResults > 6) {
+                    var newFooterMarginTop = originalFooterMarginTop - 900; // Уменьшение на 500px
         footer.css('margin-top', newFooterMarginTop + 'px');
+    }
+
+     if (totalResults <= 6) {
+                    var newFooterMarginTop = originalFooterMarginTop + 700; // Уменьшение на 500px
+        footer.css('margin-top', newFooterMarginTop + 'px');
+    }
 
     if (totalResults <= resultsPerPage) {
         showMoreButton.hide();
@@ -582,6 +646,7 @@ $(document).ready(function() {
         if (endIndex >= totalResults) {
             resultsContainer.append(remainingResults);
             showMoreButton.hide();
+            applyTruncateDescription();
 
         } else {
             resultsContainer.append(remainingResults.slice(startIndex, endIndex));
@@ -867,33 +932,8 @@ rentingMenuItem.addEventListener('mouseleave', () => {
         maxPriceSlider.addEventListener('input', updatePriceRange);
 
 </script>
-<script>
-    function truncateDescription(element) {
-  const maxLength = 120;
-  const descriptionText = element.textContent;
-
-  if (descriptionText.length > maxLength) {
-    const truncatedText = descriptionText.slice(0, maxLength);
-    const lastSpaceIndex = truncatedText.lastIndexOf(' ');
-
-    // Check if there is a space before the maximum length
-    const finalText = lastSpaceIndex === -1 ? truncatedText : truncatedText.slice(0, lastSpaceIndex);
-
-    // Add ellipsis if the text was truncated
-    if (finalText !== descriptionText) {
-      element.textContent = finalText + '...';
-    }
-  }
-}
-
-// Получаем все элементы с классом "description"
-const descriptionElements = document.querySelectorAll(".obrezanie");
-
-// Применяем скрипт к каждому элементу
-descriptionElements.forEach(truncateDescription);
-
-</script>
 
 
+</div>
 </body>
 </html>

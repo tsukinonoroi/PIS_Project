@@ -1,4 +1,4 @@
- $(document).ready(function() {
+$(document).ready(function() {
             $('#contact-form').submit(function(e) {
                 e.preventDefault();
 
@@ -21,7 +21,7 @@
                 };
 
                 $.ajax({
-                    url: 'https://b24-1dk1va.bitrix24.ru/rest/1/28ck3wiw97e5ztfz/crm.lead.add.json',
+                    url: 'https://b24-ivcpkp.bitrix24.ru/rest/1/ffb0ftpur3ju2f2y/crm.lead.add.json',
                     type: 'POST',
                     data: JSON.stringify(postData),
                     dataType: 'json',
@@ -101,6 +101,7 @@ if (filter) {
 	items.forEach(item => {
 		item.addEventListener('click', event => {
 			item.querySelector('.block-filter__dropdown').classList.toggle('_active');
+            item.querySelector('.block-filter__dropdown2').classList.toggle('_active');
 			item.querySelector('.block-filter__icon').classList.toggle('_active');
 
 			if (event.target.classList.contains('block-filter__item')) {
@@ -147,7 +148,7 @@ const galleryItems = document.querySelectorAll(".gallery__item");
 if (galleryItems.length > 0) {
 	galleryItems.forEach(item => {
 		new Swiper(item, {
-			slidesPerView: 1, 
+			slidesPerView: 1,
 			autoplay: {
 				delay: 5000,
 			},

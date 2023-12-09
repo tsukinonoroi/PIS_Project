@@ -39,7 +39,7 @@
                 };
 
                 $.ajax({
-                    url: 'https://b24-1dk1va.bitrix24.ru/rest/1/28ck3wiw97e5ztfz/crm.lead.add.json',
+                    url: 'https://b24-ivcpkp.bitrix24.ru/rest/1/ffb0ftpur3ju2f2y/crm.lead.add.json',
                     type: 'POST',
                     data: JSON.stringify(postData),
                     dataType: 'json',
@@ -377,7 +377,7 @@
                   <div class="button_applic">
                     <button id="openModalBtn1" data-toggle="modal" data-target="#customModal" class="application">Оставить заявку</button>
                   </div>
-                    <div class="mersin" > <iframe style="border-radius: 20px" width="498" height="880" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=28.91653060913086%2C40.990280970697306%2C28.934007883071903%2C40.99737474296067&amp;layer=mapnik" ></iframe> </div>
+                    <div class="mersin" > <iframe style="border-radius: 20px 0px 0px 20px" width="498" height="880" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=28.91653060913086%2C40.990280970697306%2C28.934007883071903%2C40.99737474296067&amp;layer=mapnik" ></iframe> </div>
                 </div>
             </div>
 
@@ -385,11 +385,14 @@
       <section class="maybe">
         <p class="main_txt1">Вам так же может понравиться...</p>
         {% for similar_apart in similar_aparts %}
-        <div class="kvadrati">
+        <div class="kvadrati" >
           <div class="blocks1"  data-product-id = "{{ similar_apart.id }}" >
-            <img src="{{ similar_apart.image.url }}" width="419px" height="205px" alt="" class="filter_toggle">
+            <img src="{{ similar_apart.image.url }}" onclick="navigateToSimilarApart({{ similar_apart.id }})" width="419px" height="205px" alt="" class="filter_toggle">
             <div class="prices">
-              <p>{{ similar_apart.price }}₽</p>
+<p>{{ similar_apart.price|floatformat:"0"|intcomma }} ₽</p>
+
+
+
             </div>
             <div class="fix_text_pos">
             <p class="block_text">{{ similar_apart.name}}</p>
@@ -410,7 +413,7 @@
               font-size: 13px;
               color: #383737;
               font-weight: 500;
-              line-height: 16px;">3+1</p>
+              line-height: 16px;">{{ similar_apart.quantityRoom }}</p>
             </div>
             <div class="bottom_text2 fix_bl">
               <p style="font-family: 'Montserrat';
@@ -426,7 +429,7 @@
               font-size: 13px;
               color: #383737;
               font-weight: 500;
-              line-height: 16px;">2017</p>
+              line-height: 16px;">{{ similar_apart.buildingAge}}</p>
             </div>
             <div class="bottom_text1 fix_bl">
               <p style="font-family: 'Montserrat';
@@ -442,7 +445,7 @@
               font-size: 13px;
               color: #383737;
               font-weight: 500;
-              line-height: 16px;">123 кв.м.</p>
+              line-height: 16px;">{{ similar_apart.quantityOfMetres}} м²</p>
             </div>
           </div>
           </div>
@@ -545,6 +548,44 @@
         </div>
       </footer>
 </body>
+
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const burger = document.querySelector('.menu-icon');
+  const menu = document.querySelector('.menu');
+  const body = document.body;
+
+  if (burger && menu) {
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('_active');
+      menu.classList.toggle('_active');
+      body.classList.toggle('_lock');
+    });
+  }
+});
+
+
+</script>
+
+<script>
+
+    function navigateToSimilarApart(similarApartId) {
+  // Replace this with your actual URL format or base URL
+  var baseUrl = "/tovar/?id=";
+  var url = baseUrl + similarApartId;
+
+  // Navigate to the URL
+  window.location.href = url;
+}
+
+</script>
+
+
+
+
 <script>
 $(document).ready(function() {
         if ('{{ success_message }}') {

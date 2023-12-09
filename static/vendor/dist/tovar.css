@@ -1177,11 +1177,13 @@ body {
 
 
 .mersin {
-  margin-top: -1100px;
+  position: relative;
+  margin-top: -1000px;
   float: right;
+  padding-bottom: 100px;
   width: 498px;
   height: 880px;
-  border-radius: 0px 20px 20px 20px;
+  border-radius: 20px 0px 0px 20px;
 }
 
 .maybe {
